@@ -2,7 +2,6 @@
   'use strict';
 
   document.addEventListener('DOMContentLoaded', documentReady);
-
   function documentReady () {
       var countryList = ['united states of america','india','chine','usa','pakistan','arab','germany','new zealand','poland','russia','south africa','great britian','indonasia','united arab emirates','mongloia','zimbawe','brazil','ukraine','iran','iraq','sri lanka','italy','france','spain','greece'];
       
@@ -13,7 +12,7 @@
           
       };
         
-      var auto = new Autofill();  
+      var auto = new Autofill();
       
       Autofill.prototype.showHelp = function(){
 //          console.log("rashmi");
@@ -27,29 +26,29 @@
           this.hideHelp();
       };
     Autofill.prototype.updateAutofill = function(context,e){
-      console.log("wow");
-      // var self = this;
-      // context.setCountry(self.innerHTM);
-      console.log(context);
-      console.log(e);
+
+
       context.setCountry(e.target.innerHTML)
     };
 
     Autofill.prototype.detectInput = function(){
+      console.log("in detect input");
       var list = "";
       var self = this;
       var currValue = this.field.value;
-      if(currValue.length >= 2) {//min characters
+      if(currValue.length >= this.minChar) {//min characters
          for(var i = 0; i < countryList.length; i++) {
            if(currValue.toLowerCase() === countryList[i].substr(0,currValue.length).toLowerCase()){
              if(countryList){
-               list += '<li>' + countryList[i] + '</li>'
+               list += '<li>' + countryList[i] + '</li>';
                this.help.innerHTML = list;
              }
            }
          }
+        this.showHelp();
+        console.log(list);
         this.help.childNodes.forEach(function(node){
-          // console.log(this);
+           // console.log(self);
           node.addEventListener("click",self.updateAutofill.bind(this,self));
         });
         // console.log(this.help.childNodes);
@@ -57,38 +56,37 @@
           } 
           
       };
-      
- 
+    Autofill.prototype.onFieldIn = function(){
+      // console.log("what");
+      auto.detectInput(this.field);
+
+     // auto.autoFillHelper();
+    };
+
+    Autofill.prototype.onFieldOut = function(){
+      console.log("");
+    };
+
+
+
       
    
       
        Autofill.prototype.autoFillHelper = function(){
+      
 //          var userInput = document.getElementById("countryField");
-          this.field.addEventListener("input",this.detectInput.bind(this));
+           this.field.addEventListener("input",this.detectInput.bind(this),true);
 
-      };
-    
-      auto.autoFillHelper();
+         this.field.onfocus = this.onFieldIn;
+         this.field.onblur = this.onFieldOut;
+
+
+       };
+
+    auto.autoFillHelper();
       
       
-// 
-//    var Utility, AppState, LightBoxController;
-//     
-//  
-//    AppState = require('./app.state'); 
-//  
-//  
-//    Utility = require('./utility.service');
-//    LightBoxController = require('./lightbox.controller');
-//
-//    var utility = new Utility();
-//    utility.navButtonResponse();
-//   var lightbox = new LightBoxController(utility);
-//    var appstate = new AppState(utility,lightbox);  
-//        
-//
-//    //lightbox.startListener();
-//    appstate.start();       
+
 
   
   }  
